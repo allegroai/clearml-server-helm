@@ -6,7 +6,7 @@
 * You have node labeled 'app: trains' (see Additional Information)
 #### Add trains server repository to your helm:
 ```sh
-helm repo add allegroai https://<link to github pages of helm repository>
+helm repo add allegroai https://allegroai.github.io/trains-helm/
 ```
 
 Make sure repository was added correctly:
@@ -16,7 +16,7 @@ helm search trains
 You should see allegroai/trains-server-chart
 
 #### Installing trains server chat on your cluster
-Run following command to deploy trains server on your cluster
+According to your search results, following command should deploy trains server on your cluster
 ```sh
 helm install allegroai/trains-server-chart
 ```
