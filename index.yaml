@@ -8,6 +8,6 @@ entries:
     digest: 584d0d0e6cafc53bf6f5f898ea1a70c193aae94722233aa83df160014aaa0f57
     name: trains-server-chart
     urls:
-    - https://alegma.github.io/choochoo/trains-server-chart-0.10.1+1.tgz
+    - https://allegroai.github.io/trains-helm/trains-server-chart-0.10.1+1.tgz
     version: 0.10.1+1
 generated: "2019-07-23T09:13:47.967254857+03:00"
