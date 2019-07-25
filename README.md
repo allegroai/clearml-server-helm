@@ -34,7 +34,7 @@ Use this repository to add **trains-server** to your Helm and then deploy **trai
  
 1. Add the **trains-server** repository to your Helm:
 
-        helm repo add allegroai https://allegroai.github.io/trains-helm/
+        helm repo add allegroai https://allegroai.github.io/trains-server-helm/
 
 1. Confirm the **trains-server** repository is now in Helm:
 
