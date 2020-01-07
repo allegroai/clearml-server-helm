@@ -2,8 +2,17 @@ apiVersion: v1
 entries:
   trains-server-chart:
   - apiVersion: v1
+    appVersion: 0.13.0-262
+    created: "2020-01-07T15:54:15.999445522+02:00"
+    description: Allegro.ai trains server Helm chart for Kubernetes
+    digest: e9417c550e0fc58f22b1a0023bef418ba6e35a1316181321210cfc5607f8d083
+    name: trains-server-chart
+    urls:
+    - trains-server-chart-0.13.0+1.tgz
+    version: 0.13.0+1
+  - apiVersion: v1
     appVersion: 0.12.1-182
-    created: "2019-11-24T15:15:05.880067709+02:00"
+    created: "2020-01-07T15:54:15.99868334+02:00"
     description: Allegro.ai trains server Helm chart for Kubernetes
     digest: 5bde56a3fdf7dbd421c15cb616bba094f5f6e9774161bd8a9c00d67a50efdabb
     name: trains-server-chart
@@ -12,7 +21,7 @@ entries:
     version: 0.12.1+1
   - apiVersion: v1
     appVersion: 0.12.0-174
-    created: "2019-11-24T15:15:05.879416718+02:00"
+    created: "2020-01-07T15:54:15.997826014+02:00"
     description: Allegro.ai trains server Helm chart for Kubernetes
     digest: 21c8c58d25d1b86aed47a2c343b1501c3c0fdfd0da323f4e8868e28a440a2a10
     name: trains-server-chart
@@ -21,7 +30,7 @@ entries:
     version: 0.12.0+1
   - apiVersion: v1
     appVersion: 0.11.0-139
-    created: "2019-11-24T15:15:05.878706533+02:00"
+    created: "2020-01-07T15:54:15.996813009+02:00"
     description: Allegro.ai trains server Helm chart for Kubernetes
     digest: 1511a040ed62ef7ec837b507f446607c3c0ef4151510800f7e98d3f3fe613405
     name: trains-server-chart
@@ -30,11 +39,11 @@ entries:
     version: 0.11.1+1
   - apiVersion: v1
     appVersion: "1.0"
-    created: "2019-11-24T15:15:05.878032648+02:00"
+    created: "2020-01-07T15:54:15.9959812+02:00"
     description: Allegro.ai trains server Helm chart for Kubernetes
     digest: 09674087cf6135d33bc772f4e4059952ce9134ff8e51365e4b05ea372af21729
     name: trains-server-chart
     urls:
     - trains-server-chart-0.10.1+1.tgz
     version: 0.10.1+1
-generated: "2019-11-24T15:15:05.877687219+02:00"
+generated: "2020-01-07T15:54:15.995464651+02:00"
