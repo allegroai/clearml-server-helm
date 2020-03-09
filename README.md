@@ -80,7 +80,7 @@ For information about setting this parameter on other systems, see the [elastic 
 
     sudo service docker restart
     
-## Deploying trains-server in Kubernetes Clusters Using Helm 
+## <a name="deploying-trains-server">Deploying trains-server in Kubernetes Clusters Using Helm 
  
 1. Add the `trains-server` repository to your Helm:
 
@@ -92,16 +92,25 @@ For information about setting this parameter on other systems, see the [elastic 
 
     The helm search results must include `allegroai/trains-server-chart`.
 
+1. By default, the `trains-server` deployment uses storage on a single node (labeled `app=trains`).
+To change the type of storage used (for example NFS), see [Configuring trains-server storage for NFS](#configure-trains-server-storage-nfs).
+
+1. If you'd like `trains-agent` support in your `trains` Kubernetes cluster, create a local `values.yaml`, as specified in [Configuring trains-agent instances in your cluster](#configure-trains-agents).    
+
 1. Install `trains-server-chart` on your cluster:
 
         helm install allegroai/trains-server-chart --namespace=trains --name trains-server
+        
+    Alternatively, in case you've created a local `values.yaml` file, use:
+    
+        helm install allegroai/trains-server-chart --namespace=trains --name trains-server --values values.yaml
 
     A  trains `namespace` is created in your cluster and **trains-server** is deployed in it.
    
         
-## Updating trains-server application using Helm
+## <a name="updating-trains-server"></a>Updating trains-server application using Helm
 
-1. Update using new or updated values.yaml
+1. Update using new or updated `values.yaml`
         
         helm upgrade trains-server allegroai/trains-server-chart -f new-values.yaml
         
@@ -125,7 +134,7 @@ After **trains-server** is deployed, the services expose the following node port
 * Web server on `30080`
 * File server on `30081`
 
-## Accessing trains-server
+## <a name="accessing-trains-server"></a>Accessing trains-server
 
 Access **trains-server** by creating a load balancer and domain name with records pointing to the load balancer.
 
@@ -144,6 +153,60 @@ Once you have a load balancer and domain name set up, follow these steps to conf
      * `app.<your domain name>` should be redirected to k8s cluster nodes on port `30080`
      * `files.<your domain name>` should be redirected to k8s cluster nodes on port `30081`
      * `api.<your domain name>` should be redirected to k8s cluster nodes on port `30008`
+
+## <a name="configure-trains-agents"></a>Configuring trains-agent instances in your cluster
+
+In order to create `trains-agent` instances as part of your deployment, create or update your local `values.yaml` file.
+This `values.yaml` file should be used in your `helm install` command (see [Deploying trains-server in Kubernetes Clusters Using Helm](#deploying-trains-server)) or `helm upgrade` command (see [Updating trains-server application using Helm](#updating-trains-server))  
+
+The file must contain the following values in the `agent` section:
+
+- `numberOfTrainsAgents`: controls the number of trains-agent pods to be deployed. Each agent pod will listen for and execute experiments from the **trains-server**
+- `nvidiaGpusPerAgent`: defines the number of GPUs required by each agent pod
+- `trainsApiHost`: the URL used to access the trains API server, as defined in your load-balancer (usually `https://api.<your domain name>`, see [Accessing trains-server](#accessing-trains-server))
+- `trainsWebHost`: the URL used to access the trains webservice, as defined in your load-balancer (usually `https://app.<your domain name>`, see [Accessing trains-server](#accessing-trains-server))
+- `trainsFilesHost`: the URL used to access the trains fileserver, as defined in your load-balancer (usually `https://files.<your domain name>`, see [Accessing trains-server](#accessing-trains-server))
+
+Additional optional values in the `agent` section include:
+
+- `defaultBaseDocker`: the default docker image used by the agent running in the agent pod in order to execute an experiment. Default is `nvidia/cuda`.
+- `agentVersion`: determines the specific agent version to be used in the deployment, for example `"==0.13.3"`. Default is `null` (use latest version)
+- `trainsGitUser` / `trainsGitPassword`: GIT credentials used by `trains-agent` running the experiment when cloning the GIT repository defined in the experiment, if defined. Default is `null` (not used)
+- `awsAccessKeyId` / `awsSecretAccessKey` / `awsDefaultRegion`: AWS account info used by `trains` when uploading files to an AWS S3 buckets (not required if only using the default `trains-fileserver`). Default is `null` (not used)
+- `azureStorageAccount` / `azureStorageKey`: Azure account info used by trains when uploading files to MS Azure Blob Service (not required if only using the default `trains-fileserver`). Default is `null` (not used)
+
+For example, the following `values.yaml` file requests 4 agent instances in your deployment (see [chart-example-values.yaml](https://github.com/allegroai/trains-server-k8s/blob/master/docs/chart-example-values.yaml)):
+```yaml
+agent:
+  numberOfTrainsAgents: 4
+  nvidiaGpusPerAgent: 1
+  defaultBaseDocker: "nvidia/cuda"
+  trainsApiHost: "https://api.trains.mydomain.com"
+  trainsWebHost: "https://app.trains.mydomain.com"
+  trainsFilesHost: "https://files.trains.mydomain.com"
+  trainsGitUser: null
+  trainsGitPassword: null
+  awsAccessKeyId: null
+  awsSecretAccessKey: null
+  awsDefaultRegion: null
+  azureStorageAccount: null
+  azureStorageKey: null
+```
+
+## <a name="configure-trains-server-storage-nfs"></a>Configuring trains-server storage for NFS
+
+The **trains-server** deployment uses a `PersistentVolume` of type `HostPath`, 
+which uses a fixed path on the node labeled `app: trains`.
+
+The existing chart supports changing the volume type to `NFS`, 
+by setting the `use_nfs` value and configuring the NFS persistent volume using additional values in your local `values.yaml` file:
+```yaml
+storage:
+  use_nfs: true
+  nfs:
+    server: "<nfs-server-ip-address>"
+    base_path: "/nfs/path/for/trains/data"
+``` 
 
 ## Additional Configuration for trains-server
 
