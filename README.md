@@ -88,7 +88,7 @@ For information about setting this parameter on other systems, see the [elastic 
 
 1. Confirm the `clearml-server` repository is now in Helm:
 
-        helm search clearml
+        helm search repo clearml
 
     The helm search results must include `allegroai/clearml-server-chart`.
 
